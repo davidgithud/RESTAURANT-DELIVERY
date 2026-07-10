@@ -1,12 +1,15 @@
-﻿using RestaurantIngenieriaTrujillo.Entidades;
+using RestaurantIngenieriaTrujillo.Entidades;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
 {
+    /// <summary>
+    /// Lista simple enlazada para gestionar clientes.
+    /// Implementa operaciones de inserción, búsqueda, eliminación y modificación.
+    /// También permite ordenamiento alfabético por nombre.
+    /// </summary>
     internal class ListaClientes
     {
         private NodoCliente cabeza;
@@ -15,6 +18,10 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
         {
             cabeza = null;
         }
+
+        /// <summary>
+        /// Inserta un nuevo cliente al final de la lista.
+        /// </summary>
         public void Insertar(Cliente cliente)
         {
             NodoCliente nuevo = new NodoCliente(cliente);
@@ -35,6 +42,11 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
                 aux.Siguiente = nuevo;
             }
         }
+
+        /// <summary>
+        /// Busca un cliente por su código.
+        /// Retorna null si no existe.
+        /// </summary>
         public Cliente Buscar(int codigo)
         {
             NodoCliente aux = cabeza;
@@ -49,6 +61,11 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
 
             return null;
         }
+
+        /// <summary>
+        /// Elimina un cliente por su código.
+        /// Retorna true si se eliminó correctamente, false de lo contrario.
+        /// </summary>
         public bool Eliminar(int codigo)
         {
             if (cabeza == null)
@@ -77,6 +94,11 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
 
             return false;
         }
+
+        /// <summary>
+        /// Modifica un cliente existente por su código.
+        /// Retorna true si se modificó, false si no existe.
+        /// </summary>
         public bool Modificar(Cliente cliente)
         {
             NodoCliente aux = cabeza;
@@ -94,10 +116,18 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
 
             return false;
         }
+
+        /// <summary>
+        /// Retorna el primer nodo de la lista.
+        /// </summary>
         public NodoCliente ObtenerCabeza()
         {
             return cabeza;
         }
+
+        /// <summary>
+        /// Ordena los clientes alfabéticamente por nombre usando algoritmo de burbuja.
+        /// </summary>
         public void OrdenarPorNombre()
         {
             NodoCliente actual = cabeza;

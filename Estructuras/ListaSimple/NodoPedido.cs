@@ -1,7 +1,5 @@
-﻿using RestaurantIngenieriaTrujillo.Entidades;
+using RestaurantIngenieriaTrujillo.Entidades;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +7,7 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
 {
     internal class NodoPedido
     {
-        // Información del nodo
+        // Informaci�n del nodo
         public Pedido Datos { get; set; }
 
         // Apunta al siguiente nodo

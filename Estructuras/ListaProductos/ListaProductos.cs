@@ -1,12 +1,15 @@
-﻿using RestaurantIngenieriaTrujillo.Entidades;
+using RestaurantIngenieriaTrujillo.Entidades;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RestaurantIngenieriaTrujillo.Estructuras.ListaProductos
 {
+    /// <summary>
+    /// Lista simple de productos del menú del restaurante.
+    /// Implementa operaciones de inserción, búsqueda, eliminación y modificación.
+    /// Permite ordenamiento por nombre y obtención de todos los productos.
+    /// </summary>
     internal class ListaProductos
     {
         private NodoProducto primero;
@@ -16,11 +19,17 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaProductos
             primero = null;
         }
 
+        /// <summary>
+        /// Verifica si la lista está vacía.
+        /// </summary>
         public bool EstaVacia()
         {
             return primero == null;
         }
 
+        /// <summary>
+        /// Inserta un nuevo producto al final de la lista.
+        /// </summary>
         public void Insertar(Producto producto)
         {
             NodoProducto nuevo = new NodoProducto(producto);
@@ -41,6 +50,10 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaProductos
             aux.Siguiente = nuevo;
         }
 
+        /// <summary>
+        /// Busca un producto por su código.
+        /// Retorna null si no existe.
+        /// </summary>
         public Producto Buscar(int codigo)
         {
             NodoProducto aux = primero;
@@ -56,6 +69,10 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaProductos
             return null;
         }
 
+        /// <summary>
+        /// Elimina un producto por su código.
+        /// Retorna true si se eliminó correctamente, false de lo contrario.
+        /// </summary>
         public bool Eliminar(int codigo)
         {
             if (primero == null)
@@ -85,21 +102,27 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaProductos
             return false;
         }
 
-        public List<Producto> ObtenerTodos()
+        /// <summary>
+        /// Retorna todos los productos en una lista de resultado.
+        /// </summary>
+        public ListaProductosResultado ObtenerTodos()
         {
-            List<Producto> lista = new List<Producto>();
+            ListaProductosResultado lista = new ListaProductosResultado();
 
             NodoProducto aux = primero;
 
             while (aux != null)
             {
-                lista.Add(aux.Datos);
+                lista.Agregar(aux.Datos);
                 aux = aux.Siguiente;
             }
 
             return lista;
         }
 
+        /// <summary>
+        /// Cuenta la cantidad total de productos en la lista.
+        /// </summary>
         public int Contar()
         {
             int contador = 0;
@@ -114,6 +137,11 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaProductos
 
             return contador;
         }
+
+        /// <summary>
+        /// Modifica un producto existente por su código.
+        /// Retorna true si se modificó, false si no existe.
+        /// </summary>
         public bool Modificar(Producto producto)
         {
             NodoProducto aux = primero;
@@ -131,6 +159,10 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaProductos
 
             return false;
         }
+
+        /// <summary>
+        /// Ordena los productos alfabéticamente por nombre usando algoritmo de burbuja.
+        /// </summary>
         public void OrdenarPorNombre()
         {
             if (primero == null)
@@ -158,6 +190,10 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaProductos
                 actual = actual.Siguiente;
             }
         }
+
+        /// <summary>
+        /// Retorna el primer nodo de la lista.
+        /// </summary>
         public NodoProducto ObtenerPrimero()
         {
             return primero;

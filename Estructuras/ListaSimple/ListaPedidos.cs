@@ -1,12 +1,15 @@
-﻿using RestaurantIngenieriaTrujillo.Entidades;
+using RestaurantIngenieriaTrujillo.Entidades;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
 {
+    /// <summary>
+    /// Lista simple enlazada para gestionar pedidos.
+    /// Implementa operaciones de inserción, búsqueda, eliminación y modificación.
+    /// Permite ordenamiento por código y mezcla de listas.
+    /// </summary>
     internal class ListaPedidos
     {
         private NodoPedido cabeza;
@@ -15,6 +18,10 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
         {
             cabeza = null;
         }
+
+        /// <summary>
+        /// Inserta un nuevo pedido al final de la lista.
+        /// </summary>
         public void Insertar(Pedido pedido)
         {
             NodoPedido nuevo = new NodoPedido(pedido);
@@ -34,12 +41,20 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
 
                 aux.Siguiente = nuevo;
             }
-
         }
+
+        /// <summary>
+        /// Retorna el primer nodo de la lista.
+        /// </summary>
         public NodoPedido ObtenerCabeza()
         {
             return cabeza;
         }
+
+        /// <summary>
+        /// Busca un pedido por su código.
+        /// Retorna null si no existe.
+        /// </summary>
         public Pedido Buscar(int codigo)
         {
             NodoPedido aux = cabeza;
@@ -54,12 +69,16 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
 
             return null;
         }
+
+        /// <summary>
+        /// Elimina un pedido por su código.
+        /// Retorna true si se eliminó correctamente, false de lo contrario.
+        /// </summary>
         public bool Eliminar(int codigo)
         {
             if (cabeza == null)
                 return false;
 
-            // Si el primer nodo es el que se eliminará
             if (cabeza.Datos.Codigo == codigo)
             {
                 cabeza = cabeza.Siguiente;
@@ -83,6 +102,11 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
 
             return false;
         }
+
+        /// <summary>
+        /// Modifica un pedido existente por su código.
+        /// Retorna true si se modificó, false si no existe.
+        /// </summary>
         public bool Modificar(Pedido pedidoModificado)
         {
             NodoPedido aux = cabeza;
@@ -100,6 +124,10 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
 
             return false;
         }
+
+        /// <summary>
+        /// Ordena los pedidos por código en orden ascendente usando algoritmo de burbuja.
+        /// </summary>
         public void OrdenarPorCodigo()
         {
             if (cabeza == null)
@@ -126,6 +154,10 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaSimple
                 actual = actual.Siguiente;
             }
         }
+
+        /// <summary>
+        /// Mezcla todos los pedidos de otra lista al final de esta lista.
+        /// </summary>
         public void Mezclar(ListaPedidos otraLista)
         {
             NodoPedido aux = otraLista.ObtenerCabeza();

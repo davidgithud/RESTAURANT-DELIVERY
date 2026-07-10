@@ -1,32 +1,28 @@
-﻿using System.Collections.Generic;
 using RestaurantIngenieriaTrujillo.Entidades;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RestaurantIngenieriaTrujillo.Estructuras.Grafos
 {
+    // Grafo de rutas que representa las zonas de entrega y conexiones entre ellas.
+    // Utiliza matriz de costos de adyacencia para almacenar distancias entre zonas.
     internal class GrafoRutas
     {
         private const int MAX = 20;
-
         private Zona[] zonas;
-
         private int[,] matrizCostos;
-
         private int cantidad;
+
         public GrafoRutas()
         {
             zonas = new Zona[MAX];
-
             matrizCostos = new int[MAX, MAX];
-
             cantidad = 0;
-
             InicializarMatriz();
         }
+
+        // Inicializa la matriz de costos con 0 en la diagonal y MaxValue en otros lugares.
         private void InicializarMatriz()
         {
             for (int i = 0; i < MAX; i++)
@@ -40,85 +36,135 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.Grafos
                 }
             }
         }
+
+        // Agrega una nueva zona al grafo.
         public void AgregarZona(Zona zona)
         {
             zonas[cantidad] = zona;
-
             cantidad++;
         }
-        public void AgregarConexion(int origen,int destino,int distancia)
+
+        // Agrega una conexión (arista bidireccional) entre dos zonas con una distancia.
+        public void AgregarConexion(int origen, int destino, int distancia)
         {
             matrizCostos[origen, destino] = distancia;
-
             matrizCostos[destino, origen] = distancia;
         }
+
+        // Obtiene la distancia entre dos zonas.
         public int ObtenerDistancia(int origen, int destino)
         {
             return matrizCostos[origen, destino];
         }
+
+        // Obtiene una zona por su índice.
         public Zona ObtenerZona(int indice)
         {
             return zonas[indice];
         }
+
+        // Retorna la cantidad total de zonas en el grafo.
         public int CantidadZonas()
         {
             return cantidad;
         }
-        public int[,] ObtenerMatriz()
+
+        // Elimina una zona del grafo (exceptuando la zona 0 que es el restaurante).
+        public bool EliminarZona(int indice)
         {
-            return matrizCostos;
-        }
-        public List<Zona> BFS(int origen)
-        {
-            List<Zona> recorrido = new List<Zona>();
+            // No permitir eliminar la zona 0 (Restaurant)
+            if (indice <= 0 || indice >= cantidad)
+                return false;
 
-            bool[] visitado = new bool[cantidad];
-
-            Queue<int> cola = new Queue<int>();
-
-            visitado[origen] = true;
-
-            cola.Enqueue(origen);
-
-            while (cola.Count > 0)
+            // Desplazar todas las zonas después del índice eliminado
+            for (int i = indice; i < cantidad - 1; i++)
             {
-                int actual = cola.Dequeue();
-
-                recorrido.Add(zonas[actual]);
-
-                for (int i = 0; i < cantidad; i++)
-                {
-                    if (matrizCostos[actual, i] != int.MaxValue &&
-                        !visitado[i] &&
-                        actual != i)
-                    {
-                        visitado[i] = true;
-                        cola.Enqueue(i);
-                    }
-                }
+                zonas[i] = zonas[i + 1];
+                zonas[i].Codigo = i; // Actualizar código en la zona
             }
 
-            return recorrido;
+            zonas[cantidad - 1] = null;
+            cantidad--;
+
+            // Eliminar fila y columna del índice
+            int[,] nuevaMatriz = new int[MAX, MAX];
+            InicializarMatriz();
+
+            int filaSrc = 0;
+            for (int i = 0; i <= cantidad; i++)
+            {
+                if (i == indice) continue; // Saltar la fila eliminada
+
+                    int colSrc = 0;
+                    for (int j = 0; j <= cantidad; j++)
+                    {
+                        if (j == indice) continue; // Saltar la columna eliminada
+
+                        if (filaSrc < cantidad && colSrc < cantidad)
+                        {
+                            matrizCostos[filaSrc, colSrc] = 
+                                (i < MAX && j < MAX) ? matrizCostos[i, j] : int.MaxValue;
+                        }
+                        colSrc++;
+                    }
+                    filaSrc++;
+                    }
+
+                    return true;
+                }
+
+                // Retorna la matriz de costos para inspección.
+                public int[,] ObtenerMatriz()
+                {
+                    return matrizCostos;
+                }
+
+                // Realiza un recorrido BFS (Breadth First Search) desde una zona origen.
+                // Retorna todas las zonas alcanzables en orden de descubrimiento.
+                public ListaZonas BFS(int origen)
+                {
+                    ListaZonas recorrido = new ListaZonas();
+                    bool[] visitado = new bool[cantidad];
+                    ColaZonas cola = new ColaZonas();
+                    visitado[origen] = true;
+                    cola.Encolar(origen);
+
+                    while (!cola.EstaVacia())
+                    {
+                        int actual = cola.Desencolar();
+                        recorrido.Agregar(zonas[actual]);
+
+                        for (int i = 0; i < cantidad; i++)
+                        {
+                            if (matrizCostos[actual, i] != int.MaxValue &&
+                                !visitado[i] &&
+                                actual != i)
+                            {
+                                visitado[i] = true;
+                                cola.Encolar(i);
+                            }
+                        }
+                    }            return recorrido;
         }
-        public List<Zona> DFS(int origen)
+
+        // Realiza un recorrido DFS (Depth First Search) desde una zona origen.
+        // Retorna todas las zonas alcanzables en orden de exploración profunda.
+        public ListaZonas DFS(int origen)
         {
-            List<Zona> recorrido = new List<Zona>();
-
+            ListaZonas recorrido = new ListaZonas();
             bool[] visitado = new bool[cantidad];
-
             DFSRecursivo(origen, visitado, recorrido);
-
             return recorrido;
         }
 
+        // Método recursivo para DFS.
         private void DFSRecursivo(
             int actual,
             bool[] visitado,
-            List<Zona> recorrido)
+            ListaZonas recorrido)
         {
             visitado[actual] = true;
-
-            recorrido.Add(zonas[actual]);
+            recorrido.Agregar(zonas[actual]);
 
             for (int i = 0; i < cantidad; i++)
             {
@@ -130,10 +176,12 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.Grafos
                 }
             }
         }
+
+        // Algoritmo de Dijkstra para encontrar el camino más corto desde un origen.
+        // Retorna array de distancias mínimas a cada zona.
         public int[] Dijkstra(int origen)
         {
             int[] distancia = new int[cantidad];
-
             bool[] visitado = new bool[cantidad];
 
             for (int i = 0; i < cantidad; i++)
@@ -179,9 +227,9 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.Grafos
 
             return distancia;
         }
-        public List<string> Prim()
+        public ListaStringsResultado Prim()
         {
-            List<string> resultado = new List<string>();
+            ListaStringsResultado resultado = new ListaStringsResultado();
 
             bool[] seleccionado = new bool[cantidad];
 
@@ -213,7 +261,7 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.Grafos
                     }
                 }
 
-                resultado.Add(
+                resultado.Agregar(
                     zonas[x].Nombre +
                     " -> " +
                     zonas[y].Nombre +

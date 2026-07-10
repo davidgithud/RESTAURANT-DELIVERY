@@ -1,12 +1,12 @@
-ï»¿using RestaurantIngenieriaTrujillo.Entidades;
+using RestaurantIngenieriaTrujillo.Entidades;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RestaurantIngenieriaTrujillo.Estructuras.ListaCircular
 {
+    // Lista circular enlazada de repartidores.
+    // El último nodo apunta al primero, permitiendo rotación cíclica para asignación equitativa de pedidos.
     internal class ListaCircularRepartidores
     {
         private NodoRepartidor ultimo;
@@ -17,6 +17,8 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaCircular
             ultimo = null;
             actual = null;
         }
+
+        // Inserta un nuevo repartidor al final de la lista manteniendo la circularidad.
         public void Insertar(Repartidor repartidor)
         {
             NodoRepartidor nuevo = new NodoRepartidor(repartidor);
@@ -30,12 +32,12 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaCircular
             else
             {
                 nuevo.Siguiente = ultimo.Siguiente;
-
                 ultimo.Siguiente = nuevo;
-
                 ultimo = nuevo;
             }
         }
+
+        // Retorna el primer repartidor de la lista circular.
         public NodoRepartidor ObtenerPrimero()
         {
             if (ultimo == null)
@@ -43,6 +45,8 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaCircular
 
             return ultimo.Siguiente;
         }
+
+        // Busca un repartidor por su código recorriendo la lista circular.
         public Repartidor Buscar(int codigo)
         {
             if (ultimo == null)
@@ -61,6 +65,8 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaCircular
 
             return null;
         }
+
+        // Modifica un repartidor existente por su código.
         public bool Modificar(Repartidor repartidor)
         {
             if (ultimo == null)
@@ -82,6 +88,9 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaCircular
 
             return false;
         }
+
+        // Elimina un repartidor por su código manteniendo la circularidad.
+        // Maneja casos: un único nodo, eliminar el último, eliminar otros.
         public bool Eliminar(int codigo)
         {
             if (ultimo == null)
@@ -99,14 +108,12 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaCircular
                     {
                         ultimo = null;
                     }
-
-                    // Caso 2: Eliminar el Ãºltimo
+                    // Caso 2: Eliminar el último
                     else if (actual == ultimo)
                     {
                         anterior.Siguiente = actual.Siguiente;
                         ultimo = anterior;
                     }
-
                     // Caso 3: Eliminar cualquier otro
                     else
                     {
@@ -123,21 +130,38 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaCircular
 
             return false;
         }
+
+        // Obtiene el siguiente repartidor disponible con rotación.
+        // Solo retorna repartidores con disponibilidad y menos de 3 pedidos asignados.
         public Repartidor ObtenerSiguienteRepartidor()
         {
             if (actual == null)
                 return null;
 
-            Repartidor repartidor = actual.Datos;
+            int contador = 0;
+            NodoRepartidor temp = actual;
+            do
+            {
+                // Solo repartidores disponibles con menos de 3 pedidos
+                if (temp.Datos.Disponible && temp.Datos.PedidosAsignados < 3)
+                {
+                    Repartidor r = temp.Datos;
+                    actual = temp.Siguiente;
+                    return r;
+                }
+                temp = temp.Siguiente;
+                contador++;
+            } while (temp != actual && contador < 1000);
 
-            actual = actual.Siguiente;
-
-            return repartidor;
+            return null; // Ninguno disponible
         }
+
         public bool Disponible { get; set; }
-        public List<Repartidor> ObtenerTodos()
+
+        // Retorna todos los repartidores en una lista de resultado.
+        public ListaRepartidoresResultado ObtenerTodos()
         {
-            List<Repartidor> lista = new List<Repartidor>();
+            ListaRepartidoresResultado lista = new ListaRepartidoresResultado();
 
             if (ultimo == null)
                 return lista;
@@ -146,7 +170,7 @@ namespace RestaurantIngenieriaTrujillo.Estructuras.ListaCircular
 
             do
             {
-                lista.Add(aux.Datos);
+                lista.Agregar(aux.Datos);
                 aux = aux.Siguiente;
 
             } while (aux != ultimo.Siguiente);
