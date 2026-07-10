@@ -38,172 +38,203 @@
             btnEliminar = new Button();
             btnBuscar = new Button();
             btnNuevo = new Button();
-            btnSiguiente = new Button();
             lblCantidad = new Label();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
+            label5 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvRepartidores).BeginInit();
             SuspendLayout();
             // 
             // txtCodigo
             // 
-            txtCodigo.Location = new Point(12, 109);
+            txtCodigo.Cursor = Cursors.IBeam;
+            txtCodigo.Location = new Point(15, 73);
+            txtCodigo.Margin = new Padding(3, 2, 3, 2);
             txtCodigo.Name = "txtCodigo";
-            txtCodigo.Size = new Size(177, 27);
-            txtCodigo.TabIndex = 0;
+            txtCodigo.Size = new Size(93, 23);
+            txtCodigo.TabIndex = 1;
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(12, 165);
+            txtNombre.Cursor = Cursors.IBeam;
+            txtNombre.Location = new Point(15, 130);
+            txtNombre.Margin = new Padding(3, 2, 3, 2);
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(177, 27);
-            txtNombre.TabIndex = 1;
+            txtNombre.Size = new Size(179, 23);
+            txtNombre.TabIndex = 3;
             // 
             // txtTelefono
             // 
-            txtTelefono.Location = new Point(12, 221);
+            txtTelefono.Cursor = Cursors.IBeam;
+            txtTelefono.Location = new Point(15, 187);
+            txtTelefono.Margin = new Padding(3, 2, 3, 2);
             txtTelefono.Name = "txtTelefono";
-            txtTelefono.Size = new Size(177, 27);
-            txtTelefono.TabIndex = 2;
+            txtTelefono.Size = new Size(93, 23);
+            txtTelefono.TabIndex = 4;
             // 
             // chkDisponible
             // 
             chkDisponible.AutoSize = true;
-            chkDisponible.Location = new Point(12, 272);
+            chkDisponible.Font = new Font("Microsoft Tai Le", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            chkDisponible.ForeColor = Color.DimGray;
+            chkDisponible.Location = new Point(119, 190);
+            chkDisponible.Margin = new Padding(3, 2, 3, 2);
             chkDisponible.Name = "chkDisponible";
-            chkDisponible.Size = new Size(103, 24);
-            chkDisponible.TabIndex = 4;
+            chkDisponible.Size = new Size(82, 18);
+            chkDisponible.TabIndex = 5;
             chkDisponible.Text = "Disponible";
             chkDisponible.UseVisualStyleBackColor = true;
             // 
             // dgvRepartidores
             // 
+            dgvRepartidores.BackgroundColor = Color.Bisque;
+            dgvRepartidores.BorderStyle = BorderStyle.Fixed3D;
             dgvRepartidores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvRepartidores.Location = new Point(224, 221);
+            dgvRepartidores.Location = new Point(213, 72);
+            dgvRepartidores.Margin = new Padding(3, 2, 3, 2);
             dgvRepartidores.Name = "dgvRepartidores";
             dgvRepartidores.RowHeadersWidth = 51;
-            dgvRepartidores.Size = new Size(505, 188);
-            dgvRepartidores.TabIndex = 5;
+            dgvRepartidores.Size = new Size(447, 234);
+            dgvRepartidores.TabIndex = 10;
             // 
             // btnGuardar
             // 
-            btnGuardar.Location = new Point(230, 107);
+            btnGuardar.Cursor = Cursors.Hand;
+            btnGuardar.Location = new Point(114, 233);
+            btnGuardar.Margin = new Padding(3, 2, 3, 2);
             btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(158, 29);
-            btnGuardar.TabIndex = 6;
+            btnGuardar.Size = new Size(88, 25);
+            btnGuardar.TabIndex = 7;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = true;
             btnGuardar.Click += btnGuardar_Click;
             // 
             // btnModificar
             // 
-            btnModificar.Location = new Point(230, 157);
+            btnModificar.Cursor = Cursors.Hand;
+            btnModificar.Location = new Point(15, 281);
+            btnModificar.Margin = new Padding(3, 2, 3, 2);
             btnModificar.Name = "btnModificar";
-            btnModificar.Size = new Size(158, 29);
-            btnModificar.TabIndex = 7;
-            btnModificar.Text = "Modificar";
+            btnModificar.Size = new Size(88, 25);
+            btnModificar.TabIndex = 8;
+            btnModificar.Text = "Editar";
             btnModificar.UseVisualStyleBackColor = true;
-            btnModificar.Click += btnGuardar_Click;
+            btnModificar.Click += btnModificar_Click;
             // 
             // btnEliminar
             // 
-            btnEliminar.Location = new Point(403, 109);
+            btnEliminar.Cursor = Cursors.Hand;
+            btnEliminar.Location = new Point(114, 281);
+            btnEliminar.Margin = new Padding(3, 2, 3, 2);
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(158, 29);
-            btnEliminar.TabIndex = 8;
+            btnEliminar.Size = new Size(88, 25);
+            btnEliminar.TabIndex = 9;
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = true;
             btnEliminar.Click += btnEliminar_Click;
             // 
             // btnBuscar
             // 
-            btnBuscar.Location = new Point(403, 159);
+            btnBuscar.Cursor = Cursors.Hand;
+            btnBuscar.Location = new Point(114, 72);
+            btnBuscar.Margin = new Padding(3, 2, 3, 2);
             btnBuscar.Name = "btnBuscar";
-            btnBuscar.Size = new Size(158, 29);
-            btnBuscar.TabIndex = 9;
+            btnBuscar.Size = new Size(80, 25);
+            btnBuscar.TabIndex = 2;
             btnBuscar.Text = "Buscar";
             btnBuscar.UseVisualStyleBackColor = true;
             btnBuscar.Click += btnBuscar_Click;
             // 
             // btnNuevo
             // 
-            btnNuevo.Location = new Point(571, 109);
+            btnNuevo.Cursor = Cursors.Hand;
+            btnNuevo.Location = new Point(15, 233);
+            btnNuevo.Margin = new Padding(3, 2, 3, 2);
             btnNuevo.Name = "btnNuevo";
-            btnNuevo.Size = new Size(158, 29);
-            btnNuevo.TabIndex = 10;
-            btnNuevo.Text = "Nuevo";
+            btnNuevo.Size = new Size(87, 25);
+            btnNuevo.TabIndex = 6;
+            btnNuevo.Text = "Limpiar";
             btnNuevo.UseVisualStyleBackColor = true;
             btnNuevo.Click += btnNuevo_Click;
-            // 
-            // btnSiguiente
-            // 
-            btnSiguiente.Location = new Point(571, 159);
-            btnSiguiente.Name = "btnSiguiente";
-            btnSiguiente.Size = new Size(158, 29);
-            btnSiguiente.TabIndex = 11;
-            btnSiguiente.Text = "Siguiente";
-            btnSiguiente.UseVisualStyleBackColor = true;
-            btnSiguiente.Click += btnSiguiente_Click;
             // 
             // lblCantidad
             // 
             lblCantidad.AutoSize = true;
-            lblCantidad.Location = new Point(224, 421);
+            lblCantidad.Font = new Font("Microsoft Tai Le", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblCantidad.ForeColor = Color.DimGray;
+            lblCantidad.Location = new Point(213, 56);
             lblCantidad.Name = "lblCantidad";
-            lblCantidad.Size = new Size(72, 20);
+            lblCantidad.Size = new Size(57, 14);
             lblCantidad.TabIndex = 12;
             lblCantidad.Text = "Cantidad:";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 86);
+            label1.ForeColor = Color.DimGray;
+            label1.Location = new Point(15, 54);
             label1.Name = "label1";
-            label1.Size = new Size(61, 20);
+            label1.Size = new Size(49, 16);
             label1.TabIndex = 13;
             label1.Text = "Codigo:";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 139);
+            label2.ForeColor = Color.DimGray;
+            label2.Location = new Point(15, 112);
             label2.Name = "label2";
-            label2.Size = new Size(67, 20);
+            label2.Size = new Size(54, 16);
             label2.TabIndex = 14;
             label2.Text = "Nombre:";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(12, 198);
+            label3.ForeColor = Color.DimGray;
+            label3.Location = new Point(15, 169);
             label3.Name = "label3";
-            label3.Size = new Size(70, 20);
+            label3.Size = new Size(57, 16);
             label3.TabIndex = 15;
             label3.Text = "Telefono:";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI Semibold", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.Location = new Point(230, 30);
+            label4.BackColor = SystemColors.Control;
+            label4.Font = new Font("Microsoft Tai Le", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.ForeColor = Color.Orange;
+            label4.Location = new Point(15, 19);
             label4.Name = "label4";
-            label4.Size = new Size(331, 38);
+            label4.Size = new Size(81, 19);
             label4.TabIndex = 16;
-            label4.Text = "Registro de Repartidores";
+            label4.Text = "REGISTRO";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.BackColor = SystemColors.Control;
+            label5.Font = new Font("Microsoft Tai Le", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.ForeColor = Color.Orange;
+            label5.Location = new Point(334, 19);
+            label5.Name = "label5";
+            label5.Size = new Size(196, 19);
+            label5.TabIndex = 17;
+            label5.Text = "DATOS DE REPARTIDORES";
             // 
             // FrmRepartidores
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(770, 450);
+            ClientSize = new Size(685, 335);
+            Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(lblCantidad);
-            Controls.Add(btnSiguiente);
             Controls.Add(btnNuevo);
             Controls.Add(btnBuscar);
             Controls.Add(btnEliminar);
@@ -214,6 +245,8 @@
             Controls.Add(txtTelefono);
             Controls.Add(txtNombre);
             Controls.Add(txtCodigo);
+            Font = new Font("Microsoft Tai Le", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "FrmRepartidores";
             Text = "FrmRepartidores";
             Load += FrmRepartidores_Load;
@@ -234,11 +267,11 @@
         private Button btnEliminar;
         private Button btnBuscar;
         private Button btnNuevo;
-        private Button btnSiguiente;
         private Label lblCantidad;
         private Label label1;
         private Label label2;
         private Label label3;
         private Label label4;
+        private Label label5;
     }
 }

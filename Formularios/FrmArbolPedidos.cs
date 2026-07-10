@@ -1,11 +1,10 @@
-ï»¿using RestaurantIngenieriaTrujillo.Sistema;
+using RestaurantIngenieriaTrujillo.Sistema;
 using RestaurantIngenieriaTrujillo.Entidades;
+using RestaurantIngenieriaTrujillo.Estructuras.Listas;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,31 +28,41 @@ namespace RestaurantIngenieriaTrujillo.Formularios
         {
             dgvArbol.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            dgvArbol.Columns.Add("Codigo", "CÃ³digo");
+            dgvArbol.Columns.Add("Codigo", "Código");
 
             dgvArbol.Columns.Add("Cliente", "Cliente");
 
             dgvArbol.Columns.Add("Producto", "Producto");
 
-            dgvArbol.Columns.Add("Estado", "Estado");
+            dgvArbol.Columns.Add("Cantidad", "Cantidad");
 
             dgvArbol.Columns.Add("Total", "Total");
+
+            dgvArbol.Columns.Add("Prioridad", "Prioridad");
+
+            dgvArbol.Columns.Add("Repartidor", "Repartidor");
 
             Mostrar(
                 SistemaDelivery.ArbolPedidos.InOrden());
         }
-        private void Mostrar(List<Pedido> lista)
+        private void Mostrar(ListaPedidosResultado lista)
         {
             dgvArbol.Rows.Clear();
 
-            foreach (Pedido p in lista)
+            NodoPedidoResultado aux = lista.ObtenerPrimero();
+            while (aux != null)
             {
+                Pedido p = aux.Datos;
                 dgvArbol.Rows.Add(
                     p.Codigo,
                     p.Cliente.Nombre,
                     p.Producto.Nombre,
-                    p.Estado,
-                    p.Total);
+                    p.Cantidad,
+                    p.Total,
+                    p.EsPrioritario ? "Sí" : "No",
+                    p.Repartidor == null ? "Sin asignar" : p.Repartidor.Nombre);
+
+                aux = aux.Siguiente;
             }
 
             lblCantidad.Text =
@@ -66,24 +75,12 @@ namespace RestaurantIngenieriaTrujillo.Formularios
             Mostrar(
                 SistemaDelivery.ArbolPedidos.InOrden());
         }
-        private void btnPreOrden_Click(object sender,
-                               EventArgs e)
-        {
-            Mostrar(
-                SistemaDelivery.ArbolPedidos.PreOrden());
-        }
-        private void btnPostOrden_Click(object sender,
-                                EventArgs e)
-        {
-            Mostrar(
-                SistemaDelivery.ArbolPedidos.PostOrden());
-        }
         private void btnBuscar_Click(object sender,
                              EventArgs e)
         {
             if (txtBuscarCodigo.Text == "")
             {
-                MessageBox.Show("Ingrese un cÃ³digo.");
+                MessageBox.Show("Ingrese un código.");
                 return;
             }
 
@@ -104,8 +101,10 @@ namespace RestaurantIngenieriaTrujillo.Formularios
                 pedido.Codigo,
                 pedido.Cliente.Nombre,
                 pedido.Producto.Nombre,
-                pedido.Estado,
-                pedido.Total);
+                pedido.Cantidad,
+                pedido.Total,
+                pedido.EsPrioritario ? "Sí" : "No",
+                pedido.Repartidor == null ? "Sin asignar" : pedido.Repartidor.Nombre);
         }
         private void btnRango_Click(object sender,
                             EventArgs e)

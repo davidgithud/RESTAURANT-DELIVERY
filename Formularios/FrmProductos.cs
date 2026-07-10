@@ -1,11 +1,10 @@
-锘縰sing RestaurantIngenieriaTrujillo.Entidades;
+using RestaurantIngenieriaTrujillo.Entidades;
+using RestaurantIngenieriaTrujillo.Estructuras.ListaProductos;
 using RestaurantIngenieriaTrujillo.Sistema;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -22,12 +21,9 @@ namespace RestaurantIngenieriaTrujillo.Formularios
         private void FrmProductos_Load(object sender, EventArgs e)
         {
             dgvProductos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-
-
             dgvProductos.Columns.Clear();
 
-            dgvProductos.Columns.Add("Codigo", "C贸digo");
+            dgvProductos.Columns.Add("Codigo", "C骴igo");
             dgvProductos.Columns.Add("Nombre", "Nombre");
             dgvProductos.Columns.Add("Precio", "Precio");
             dgvProductos.Columns.Add("Tiempo", "Tiempo (min)");
@@ -48,7 +44,13 @@ namespace RestaurantIngenieriaTrujillo.Formularios
         {
             if (txtCodigo.Text == "")
             {
-                MessageBox.Show("Ingrese el c贸digo.");
+                MessageBox.Show("Ingrese el c骴igo.");
+                return false;
+            }
+
+            if (!int.TryParse(txtCodigo.Text, out int codigo) || codigo <= 0)
+            {
+                MessageBox.Show("Ingrese un c骴igo valido.");
                 return false;
             }
 
@@ -65,7 +67,14 @@ namespace RestaurantIngenieriaTrujillo.Formularios
             }
             if (txtTiempoPreparacion.Text == "")
             {
-                MessageBox.Show("Ingrese el tiempo de preparaci贸n.");
+                MessageBox.Show("Ingrese el tiempo de preparaci髇.");
+                txtTiempoPreparacion.Focus();
+                return false;
+            }
+
+            if (!int.TryParse(txtTiempoPreparacion.Text, out int tiempo) || tiempo <= 0)
+            {
+                MessageBox.Show("El tiempo de preparaci髇 debe ser m韓imo 1 minuto.");
                 txtTiempoPreparacion.Focus();
                 return false;
             }
@@ -81,7 +90,7 @@ namespace RestaurantIngenieriaTrujillo.Formularios
 
             if (SistemaDelivery.ListaProductos.Buscar(codigo) != null)
             {
-                MessageBox.Show("C贸digo repetido.");
+                MessageBox.Show("Ya existe un producto con ese c骴igo.");
                 return;
             }
 
@@ -100,15 +109,21 @@ namespace RestaurantIngenieriaTrujillo.Formularios
         {
             dgvProductos.Rows.Clear();
 
-            List<Producto> lista =
+            ListaProductosResultado lista =
                 SistemaDelivery.ListaProductos.ObtenerTodos();
 
-            foreach (Producto p in lista)
+            int contador = 0;
+            NodoProductoResultado aux = lista.ObtenerPrimero();
+
+            while (aux != null)
             {
+                Producto p = aux.Datos;
                 dgvProductos.Rows.Add(p.Codigo, p.Nombre, p.Precio, p.TiempoPreparacion);
+                contador++;
+                aux = aux.Siguiente;
             }
 
-            lblCantidad.Text = "Productos registrados: " + lista.Count;
+            lblCantidad.Text = "Productos registrados: " + contador;
         }
         private void btnBuscar_Click(object sender, EventArgs e)
         {
@@ -123,6 +138,24 @@ namespace RestaurantIngenieriaTrujillo.Formularios
             txtNombre.Text = producto.Nombre;
             txtPrecio.Text = producto.Precio.ToString();
             txtTiempoPreparacion.Text = producto.TiempoPreparacion.ToString();
+
+            // Seleccionar la fila en el DataGridView
+            SeleccionarProductoEnGrid(producto.Codigo);
+        }
+
+        private void SeleccionarProductoEnGrid(int codigo)
+        {
+            for (int i = 0; i < dgvProductos.Rows.Count; i++)
+            {
+                if (dgvProductos.Rows[i].Cells[0].Value != null && 
+                    Convert.ToInt32(dgvProductos.Rows[i].Cells[0].Value) == codigo)
+                {
+                    dgvProductos.ClearSelection();
+                    dgvProductos.Rows[i].Selected = true;
+                    dgvProductos.FirstDisplayedScrollingRowIndex = i;
+                    break;
+                }
+            }
         }
 
         private void btnModificar_Click(object sender, EventArgs e)
@@ -149,12 +182,12 @@ namespace RestaurantIngenieriaTrujillo.Formularios
         {
             if (txtCodigo.Text == "")
             {
-                MessageBox.Show("Ingrese el c贸digo.");
+                MessageBox.Show("Ingrese el c骴igo.");
                 return;
             }
 
             DialogResult r = MessageBox.Show(
-                "驴Desea eliminar el producto?",
+                "緿esea eliminar el producto?",
                 "Confirmar",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -179,14 +212,7 @@ namespace RestaurantIngenieriaTrujillo.Formularios
                 MessageBox.Show("Producto no encontrado.");
             }
         }
-        private void btnOrdenar_Click(object sender, EventArgs e)
-        {
-            SistemaDelivery.ListaProductos.OrdenarPorNombre();
 
-            MostrarProductos();
-
-            MessageBox.Show("Productos ordenados.");
-        }
         private void btnNuevo_Click(object sender, EventArgs e)
         {
             Limpiar();

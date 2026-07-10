@@ -1,12 +1,10 @@
-锘縰sing RestaurantIngenieriaTrujillo.Entidades;
+using RestaurantIngenieriaTrujillo.Entidades;
 using RestaurantIngenieriaTrujillo.Estructuras.ListaSimple;
 using RestaurantIngenieriaTrujillo.Sistema;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -27,26 +25,36 @@ namespace RestaurantIngenieriaTrujillo.Formularios
         private void FrmClientes_Load(object sender, EventArgs e)
         {
             dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            cboZona.Items.Add("Centro");
-            cboZona.Items.Add("California");
-            cboZona.Items.Add("El Recreo");
-            cboZona.Items.Add("Primavera");
-            cboZona.Items.Add("San Andr茅s");
-            cboZona.Items.Add("Las Quintanas");
-            cboZona.Items.Add("Palermo");
-            cboZona.Items.Add("El Golf");
-            cboZona.Items.Add("V铆ctor Larco");
-            cboZona.Items.Add("Buenos Aires");
 
-            cboZona.SelectedIndex = 0;
+            // Cargar las zonas din醡icamente desde el grafo
+            CargarZonasDesdeGrafo();
 
-            dgvClientes.Columns.Add("Codigo", "C贸digo");
+            dgvClientes.Columns.Add("Codigo", "C骴igo");
             dgvClientes.Columns.Add("DNI", "DNI");
             dgvClientes.Columns.Add("Nombre", "Nombre");
-            dgvClientes.Columns.Add("Telefono", "Tel茅fono");
-            dgvClientes.Columns.Add("Direccion", "Direcci贸n");
+            dgvClientes.Columns.Add("Telefono", "Tel閒ono");
+            dgvClientes.Columns.Add("Direccion", "Direcci髇");
             dgvClientes.Columns.Add("Zona", "Zona");
 
+            MostrarClientes();
+        }
+
+        private void CargarZonasDesdeGrafo()
+        {
+            cboZona.Items.Clear();
+
+            // Cargar todas las zonas del grafo (excepto el Restaurant que es la zona 0)
+            for (int i = 1; i < SistemaDelivery.Grafo.CantidadZonas(); i++)
+            {
+                Zona zona = SistemaDelivery.Grafo.ObtenerZona(i);
+                if (zona != null)
+                {
+                    cboZona.Items.Add(zona.Nombre);
+                }
+            }
+
+            if (cboZona.Items.Count > 0)
+                cboZona.SelectedIndex = 0;
         }
         private void Limpiar()
         {
@@ -64,7 +72,15 @@ namespace RestaurantIngenieriaTrujillo.Formularios
         {
             if (txtCodigo.Text.Trim() == "")
             {
-                MessageBox.Show("Ingrese el c贸digo.");
+                MessageBox.Show("Ingrese el c骴igo.");
+                txtCodigo.Focus();
+                return false;
+            }
+
+            // Validar que el c骴igo no sea 0
+            if (!int.TryParse(txtCodigo.Text, out int codigo) || codigo <= 0)
+            {
+                MessageBox.Show("Ingrese un c骴igo v醠ido.");
                 txtCodigo.Focus();
                 return false;
             }
@@ -85,21 +101,27 @@ namespace RestaurantIngenieriaTrujillo.Formularios
 
             if (txtTelefono.Text.Trim() == "")
             {
-                MessageBox.Show("Ingrese el tel茅fono.");
+                MessageBox.Show("Ingrese el tel閒ono.");
                 txtTelefono.Focus();
                 return false;
             }
 
             if (txtDireccion.Text.Trim() == "")
             {
-                MessageBox.Show("Ingrese la direcci贸n.");
+                MessageBox.Show("Ingrese la direcci髇.");
                 txtDireccion.Focus();
                 return false;
             }
             if (txtDNI.Text.Length != 8)
             {
-                MessageBox.Show("El DNI debe tener 8 d铆gitos.");
+                MessageBox.Show("El DNI debe tener 8 d韌itos.");
                 txtDNI.Focus();
+                return false;
+            }
+            if (txtTelefono.Text.Length != 9)
+            {
+                MessageBox.Show("El tel閒ono debe tener 9 d韌itos.");
+                txtTelefono.Focus();
                 return false;
             }
             return true;
@@ -113,7 +135,7 @@ namespace RestaurantIngenieriaTrujillo.Formularios
 
             if (SistemaDelivery.ListaClientes.Buscar(codigo) != null)
             {
-                MessageBox.Show("Ya existe un cliente con ese c贸digo.");
+                MessageBox.Show("Ya existe un cliente con ese c骴igo.");
                 txtCodigo.Focus();
                 return;
             }
@@ -153,37 +175,74 @@ namespace RestaurantIngenieriaTrujillo.Formularios
         }
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (txtCodigo.Text == "")
+            if (txtCodigo.Text == "" && txtDNI.Text == "")
             {
-                MessageBox.Show("Ingrese el c贸digo.");
+                MessageBox.Show("Ingrese el c骴igo o el DNI para buscar.");
                 return;
             }
 
-            Cliente cliente = SistemaDelivery.ListaClientes.Buscar(Convert.ToInt32(txtCodigo.Text));
+            Cliente cliente = null;
+
+            if (txtCodigo.Text != "")
+            {
+                cliente = SistemaDelivery.ListaClientes.Buscar(Convert.ToInt32(txtCodigo.Text));
+            }
+
+            if (cliente == null && txtDNI.Text != "")
+            {
+                NodoCliente aux = SistemaDelivery.ListaClientes.ObtenerCabeza();
+                while (aux != null)
+                {
+                    if (aux.Datos.DNI == txtDNI.Text)
+                    {
+                        cliente = aux.Datos;
+                        break;
+                    }
+                    aux = aux.Siguiente;
+                }
+            }
 
             if (cliente == null)
             {
                 MessageBox.Show("Cliente no encontrado.");
                 return;
             }
-
+            txtCodigo.Text = cliente.Codigo.ToString();
             txtDNI.Text = cliente.DNI;
             txtNombre.Text = cliente.Nombre;
             txtTelefono.Text = cliente.Telefono;
             txtDireccion.Text = cliente.Direccion;
             cboZona.Text = cliente.Zona;
+
+            // Seleccionar la fila en el DataGridView
+            SeleccionarClienteEnGrid(cliente.Codigo);
+        }
+
+        private void SeleccionarClienteEnGrid(int codigo)
+        {
+            for (int i = 0; i < dgvClientes.Rows.Count; i++)
+            {
+                if (dgvClientes.Rows[i].Cells[0].Value != null && 
+                    Convert.ToInt32(dgvClientes.Rows[i].Cells[0].Value) == codigo)
+                {
+                    dgvClientes.ClearSelection();
+                    dgvClientes.Rows[i].Selected = true;
+                    dgvClientes.FirstDisplayedScrollingRowIndex = i;
+                    break;
+                }
+            }
         }
         private void btnEliminar_Click(object sender,
                                EventArgs e)
         {
             if (txtCodigo.Text == "")
             {
-                MessageBox.Show("Ingrese el c贸digo.");
+                MessageBox.Show("Ingrese el c骴igo.");
 
                 return;
             }
 
-            DialogResult respuesta = MessageBox.Show("驴Desea eliminar este cliente?", "Confirmar",
+            DialogResult respuesta = MessageBox.Show("緿esea eliminar este cliente?", "Confirmar",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
@@ -229,14 +288,6 @@ namespace RestaurantIngenieriaTrujillo.Formularios
             {
                 MessageBox.Show("Cliente no encontrado.");
             }
-        }
-        private void btnOrdenar_Click(object sender, EventArgs e)
-        {
-            SistemaDelivery.ListaClientes.OrdenarPorNombre();
-
-            MostrarClientes();
-
-            MessageBox.Show("Lista ordenada.");
         }
 
         private void dgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)

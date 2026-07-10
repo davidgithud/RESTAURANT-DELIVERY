@@ -30,12 +30,10 @@
         {
             label1 = new Label();
             dgvHistorial = new DataGridView();
-            CodigoPedido = new DataGridViewTextBoxColumn();
-            Estado = new DataGridViewTextBoxColumn();
-            FechaHora = new DataGridViewTextBoxColumn();
-            btnSiguiente = new Button();
-            btnAnterior = new Button();
             lblCantidad = new Label();
+            btnLimpiarHist = new Button();
+            btnAnterior = new Button();
+            btnSiguiente = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvHistorial).BeginInit();
             SuspendLayout();
             // 
@@ -43,82 +41,85 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(111, 32);
+            label1.ForeColor = Color.Orange;
+            label1.Location = new Point(27, 18);
             label1.Name = "label1";
-            label1.Size = new Size(330, 31);
+            label1.Size = new Size(322, 25);
             label1.TabIndex = 0;
-            label1.Text = "Historial de Estado de Pedidos";
+            label1.Text = "HISTORIAL DE ESTADO DE PEDIDOS";
             // 
             // dgvHistorial
             // 
+            dgvHistorial.AllowUserToAddRows = false;
+            dgvHistorial.AllowUserToDeleteRows = false;
+            dgvHistorial.BackgroundColor = Color.Bisque;
+            dgvHistorial.BorderStyle = BorderStyle.Fixed3D;
             dgvHistorial.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvHistorial.Columns.AddRange(new DataGridViewColumn[] { CodigoPedido, Estado, FechaHora });
-            dgvHistorial.Location = new Point(53, 82);
+            dgvHistorial.Location = new Point(27, 57);
+            dgvHistorial.Margin = new Padding(3, 2, 3, 2);
             dgvHistorial.Name = "dgvHistorial";
+            dgvHistorial.ReadOnly = true;
             dgvHistorial.RowHeadersWidth = 51;
-            dgvHistorial.Size = new Size(421, 232);
+            dgvHistorial.Size = new Size(554, 289);
             dgvHistorial.TabIndex = 1;
-            // 
-            // CodigoPedido
-            // 
-            CodigoPedido.HeaderText = "Codigo Pedido";
-            CodigoPedido.MinimumWidth = 6;
-            CodigoPedido.Name = "CodigoPedido";
-            CodigoPedido.Width = 125;
-            // 
-            // Estado
-            // 
-            Estado.HeaderText = "Estado";
-            Estado.MinimumWidth = 6;
-            Estado.Name = "Estado";
-            Estado.Width = 125;
-            // 
-            // FechaHora
-            // 
-            FechaHora.HeaderText = "Fecha y Hora";
-            FechaHora.MinimumWidth = 6;
-            FechaHora.Name = "FechaHora";
-            FechaHora.Width = 125;
-            // 
-            // btnSiguiente
-            // 
-            btnSiguiente.Location = new Point(53, 365);
-            btnSiguiente.Name = "btnSiguiente";
-            btnSiguiente.Size = new Size(200, 29);
-            btnSiguiente.TabIndex = 2;
-            btnSiguiente.Text = "Siguiente";
-            btnSiguiente.UseVisualStyleBackColor = true;
-            btnSiguiente.Click += btnSiguiente_Click;
-            // 
-            // btnAnterior
-            // 
-            btnAnterior.Location = new Point(274, 365);
-            btnAnterior.Name = "btnAnterior";
-            btnAnterior.Size = new Size(200, 29);
-            btnAnterior.TabIndex = 3;
-            btnAnterior.Text = "Anterior";
-            btnAnterior.UseVisualStyleBackColor = true;
-            btnAnterior.Click += btnAnterior_Click;
             // 
             // lblCantidad
             // 
             lblCantidad.AutoSize = true;
-            lblCantidad.Location = new Point(53, 317);
+            lblCantidad.Font = new Font("Microsoft Tai Le", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblCantidad.ForeColor = Color.DimGray;
+            lblCantidad.Location = new Point(510, 365);
             lblCantidad.Name = "lblCantidad";
-            lblCantidad.Size = new Size(84, 20);
+            lblCantidad.Size = new Size(66, 14);
             lblCantidad.TabIndex = 4;
             lblCantidad.Text = "Cantidad: 0";
             // 
+            // btnLimpiarHist
+            // 
+            btnLimpiarHist.Cursor = Cursors.Hand;
+            btnLimpiarHist.Location = new Point(455, 17);
+            btnLimpiarHist.Name = "btnLimpiarHist";
+            btnLimpiarHist.Size = new Size(126, 29);
+            btnLimpiarHist.TabIndex = 3;
+            btnLimpiarHist.Text = "Limpiar Historial";
+            btnLimpiarHist.UseVisualStyleBackColor = true;
+            btnLimpiarHist.Click += BtnLimpiarHist_Click;
+            // 
+            // btnAnterior
+            // 
+            btnAnterior.Cursor = Cursors.Hand;
+            btnAnterior.Location = new Point(27, 358);
+            btnAnterior.Name = "btnAnterior";
+            btnAnterior.Size = new Size(80, 29);
+            btnAnterior.TabIndex = 1;
+            btnAnterior.Text = "Atrás";
+            btnAnterior.UseVisualStyleBackColor = true;
+            btnAnterior.Click += btnAnterior_Click;
+            // 
+            // btnSiguiente
+            // 
+            btnSiguiente.Cursor = Cursors.Hand;
+            btnSiguiente.Location = new Point(113, 358);
+            btnSiguiente.Name = "btnSiguiente";
+            btnSiguiente.Size = new Size(80, 29);
+            btnSiguiente.TabIndex = 2;
+            btnSiguiente.Text = "Adelante";
+            btnSiguiente.UseVisualStyleBackColor = true;
+            btnSiguiente.Click += btnSiguiente_Click;
+            // 
             // FrmHistorial
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(524, 423);
-            Controls.Add(lblCantidad);
-            Controls.Add(btnAnterior);
+            ClientSize = new Size(601, 406);
             Controls.Add(btnSiguiente);
+            Controls.Add(btnAnterior);
+            Controls.Add(lblCantidad);
+            Controls.Add(btnLimpiarHist);
             Controls.Add(dgvHistorial);
             Controls.Add(label1);
+            Font = new Font("Microsoft Tai Le", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "FrmHistorial";
             Text = "FrmHistorial";
             Load += FrmHistorial_Load;
@@ -131,11 +132,9 @@
 
         private Label label1;
         private DataGridView dgvHistorial;
-        private DataGridViewTextBoxColumn CodigoPedido;
-        private DataGridViewTextBoxColumn Estado;
-        private DataGridViewTextBoxColumn FechaHora;
-        private Button btnSiguiente;
-        private Button btnAnterior;
         private Label lblCantidad;
+        private Button btnLimpiarHist;
+        private Button btnAnterior;
+        private Button btnSiguiente;
     }
 }
